@@ -62,7 +62,27 @@ CREATE POLICY "Users can delete their own votes"
   ON votes FOR DELETE
   USING (auth.uid() = user_id);
 
--- 6. Indexes for performance
+-- 6. Server-side function: get projects with vote counts
+CREATE OR REPLACE FUNCTION get_projects_with_votes()
+RETURNS TABLE (
+  id UUID,
+  name TEXT,
+  description TEXT,
+  social_media_link TEXT,
+  user_id UUID,
+  created_at TIMESTAMPTZ,
+  vote_count BIGINT
+) LANGUAGE sql SECURITY DEFINER AS $$
+  SELECT
+    p.id, p.name, p.description, p.social_media_link, p.user_id, p.created_at,
+    COUNT(v.id) AS vote_count
+  FROM projects p
+  LEFT JOIN votes v ON v.project_id = p.id
+  GROUP BY p.id
+  ORDER BY vote_count DESC, p.created_at ASC;
+$$;
+
+-- 7. Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_votes_project_id ON votes(project_id);
 CREATE INDEX IF NOT EXISTS idx_votes_user_id ON votes(user_id);
 CREATE INDEX IF NOT EXISTS idx_projects_user_id ON projects(user_id);

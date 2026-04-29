@@ -22,12 +22,12 @@ export function Leaderboard() {
       setLoading(true);
 
       try {
-        const { data: projectData, error: projectError } = await supabase
-          .from("projects")
-          .select(
-            "id, name, description, social_media_link, user_id, created_at"
-          );
-        if (projectError) throw projectError;
+        // Use server-side RPC to get projects with vote counts (no row limit issue)
+        const { data: projectData, error: rpcError } = await supabase.rpc(
+          "get_projects_with_votes"
+        );
+
+        if (rpcError) throw rpcError;
         if (cancelled) return;
 
         if (!projectData || projectData.length === 0) {
@@ -36,29 +36,32 @@ export function Leaderboard() {
           return;
         }
 
-        const { data: allVotes, error: votesError } = await supabase
-          .from("votes")
-          .select("project_id, user_id");
-        if (votesError) throw votesError;
-        if (cancelled) return;
-
-        const countMap: Record<string, number> = {};
-        const currentUserVotes = new Set<string>();
-
-        (allVotes ?? []).forEach(
-          (v: { project_id: string; user_id: string }) => {
-            countMap[v.project_id] = (countMap[v.project_id] || 0) + 1;
-            if (userId && v.user_id === userId) {
-              currentUserVotes.add(v.project_id);
-            }
-          }
-        );
-
-        const enriched: Project[] = projectData.map((p) => ({
-          ...p,
-          vote_count: countMap[p.id] || 0,
+        const enriched: Project[] = (
+          projectData as Array<Project & { vote_count: number }>
+        ).map((p) => ({
+          id: p.id,
+          name: p.name,
+          description: p.description,
+          social_media_link: p.social_media_link,
+          user_id: p.user_id,
+          created_at: p.created_at,
+          vote_count: Number(p.vote_count) || 0,
         }));
-        enriched.sort((a, b) => (b.vote_count ?? 0) - (a.vote_count ?? 0));
+
+        // Fetch current user's votes (bounded by number of projects, not total votes)
+        const currentUserVotes = new Set<string>();
+        if (userId) {
+          const { data: myVotes } = await supabase
+            .from("votes")
+            .select("project_id")
+            .eq("user_id", userId);
+          if (!cancelled && myVotes) {
+            myVotes.forEach((v: { project_id: string }) =>
+              currentUserVotes.add(v.project_id)
+            );
+          }
+        }
+        if (cancelled) return;
 
         setProjects(enriched);
         setUserVotes(currentUserVotes);
@@ -103,7 +106,7 @@ export function Leaderboard() {
     <div className="space-y-3">
       {projects.map((project, index) => (
         <ProjectCard
-          key={project.id}
+          key={`${project.id}-${userId ?? "anon"}`}
           project={project}
           rank={index + 1}
           voted={userVotes.has(project.id)}
