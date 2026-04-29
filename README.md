@@ -1,67 +1,73 @@
-# Project Submission Form
+# Project Showcase
 
-A responsive, client-side project submission form built with vanilla HTML, CSS, and JavaScript.
+A project submission and voting platform powered by **Supabase**. Users sign in with email, submit their projects, upvote others, and compete on a live leaderboard.
 
 ## Features
 
-- **Multi-section form** — Project info, team details, and additional context
-- **Client-side validation** — Real-time inline validation on blur with descriptive error messages
-- **Responsive design** — Works on desktop, tablet, and mobile
-- **Character counter** — Live character count for the description field
-- **Success modal** — Confirmation dialog on successful submission
-- **Accessible** — Proper labels, focus states, and semantic HTML
-- **Zero dependencies** — No frameworks or libraries required
+- **Email Authentication** — Sign up and sign in with email/password via Supabase Auth
+- **Project Submission** — Submit your project with a name, description, and social media post link
+- **Upvoting** — One vote per user per project; toggle on/off
+- **Leaderboard** — Projects ranked by most upvotes, with medals for the top 3
+- **Tagging Reminder** — Prompts users to tag @CognitionAI and @DevinAI on social media
+- **Responsive** — Works on desktop, tablet, and mobile
+- **Zero build step** — Vanilla HTML/CSS/JS; just open `index.html`
 
-## Form Fields
+## Setup
 
-### Project Information
-- Project Name (required)
-- Category (required)
-- Project Description (required, max 1000 chars)
-- Technologies Used (required)
-- Repository URL (optional)
-- Live Demo URL (optional)
+### 1. Create a Supabase Project
 
-### Team Information
-- Team Lead Name (required)
-- Email Address (required)
-- Team Size (required, 1–20)
-- Team Members (optional)
+Go to [supabase.com](https://supabase.com) and create a new project.
 
-### Additional Details
-- Project Timeline (start/end dates)
-- Project Status (required: Planning / In Progress / Completed)
-- Challenges Faced (optional)
-- Submission guidelines agreement (required)
+### 2. Run the Database Setup
 
-## Getting Started
+Open the **SQL Editor** in your Supabase Dashboard and run the contents of [`supabase-setup.sql`](supabase-setup.sql). This creates:
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MatheusDaros/project-submission-form.git
-   ```
+- `projects` table
+- `votes` table (with unique constraint for one vote per user per project)
+- Row Level Security (RLS) policies
+- `get_vote_counts()` function for the leaderboard
+- Performance indexes
 
-2. Open `index.html` in your browser — no build step required.
+### 3. Configure the App
+
+Edit `js/config.js` and replace the placeholder values with your Supabase project credentials:
+
+```js
+const SUPABASE_CONFIG = {
+  url: 'https://your-project.supabase.co',
+  anonKey: 'your-anon-key-here'
+};
+```
+
+You can find these in your Supabase Dashboard → Settings → API.
+
+### 4. Open the App
+
+Open `index.html` in your browser. No build step required.
 
 ## Project Structure
 
 ```
 project-submission-form/
-├── index.html          # Main HTML page
+├── index.html              # Main HTML page (auth, form, leaderboard)
 ├── css/
-│   └── styles.css      # All styles
+│   └── styles.css          # All styles
 ├── js/
-│   ├── validation.js   # Validation utilities
-│   └── form.js         # Form controller & event handling
+│   ├── config.js           # Supabase URL and anon key
+│   ├── supabase-client.js  # Supabase client initialization
+│   ├── auth.js             # Auth module (sign up, sign in, sign out)
+│   ├── projects.js         # Project submission and voting logic
+│   ├── leaderboard.js      # Leaderboard fetch and rendering
+│   └── app.js              # Main controller and event handling
+├── supabase-setup.sql      # Database schema and RLS policies
 └── README.md
 ```
 
 ## Customization
 
-- **Styling** — Edit `css/styles.css`. All colors and spacing use CSS custom properties defined in `:root`.
-- **Validation rules** — Edit `js/validation.js` to change or add validation logic.
-- **Form fields** — Add new fields in `index.html` and update the `collectFormData()` and validation functions accordingly.
-- **Backend integration** — Replace the `console.log` in the submit handler (`js/form.js`) with a `fetch()` call to your API endpoint.
+- **Styling** — Edit `css/styles.css`. Colors and spacing use CSS custom properties in `:root`.
+- **Form fields** — Add fields in `index.html`, update `Projects.submit()` in `js/projects.js`, and add columns to the `projects` table.
+- **Social media tags** — Edit the info box text in `index.html`.
 
 ## License
 
