@@ -18,6 +18,9 @@ export function Leaderboard() {
     let cancelled = false;
 
     async function loadData() {
+      setError("");
+      setLoading(true);
+
       try {
         const { data: projectData, error: projectError } = await supabase
           .from("projects")

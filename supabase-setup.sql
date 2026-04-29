@@ -51,7 +51,12 @@ CREATE POLICY "Votes are viewable by everyone"
 
 CREATE POLICY "Users can insert their own votes"
   ON votes FOR INSERT
-  WITH CHECK (auth.uid() = user_id);
+  WITH CHECK (
+    auth.uid() = user_id
+    AND NOT EXISTS (
+      SELECT 1 FROM projects WHERE projects.id = project_id AND projects.user_id = auth.uid()
+    )
+  );
 
 CREATE POLICY "Users can delete their own votes"
   ON votes FOR DELETE
