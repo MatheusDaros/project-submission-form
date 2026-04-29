@@ -66,17 +66,29 @@ export function VoteButton({
               ? "Remove vote"
               : "Upvote this project"
       }
-      className={`flex flex-col items-center gap-0.5 px-3 py-2 rounded-lg border text-sm min-w-[52px] transition-all cursor-pointer
+      className={`flex flex-col items-center gap-0.5 px-3 py-2.5 rounded-xl border text-sm min-w-[56px] transition-all duration-200 cursor-pointer
         ${
           voted
-            ? "border-violet-500 bg-violet-50 text-violet-700"
-            : "border-gray-200 bg-gray-50 text-gray-500 hover:border-violet-400 hover:bg-violet-50"
+            ? "border-primary-400 bg-primary-50 text-primary-700 shadow-sm shadow-primary-400/20 scale-105"
+            : "border-gray-200 bg-white/60 text-gray-400 hover:border-primary-300 hover:bg-primary-50 hover:text-primary-600 hover:shadow-sm"
         }
-        ${disabled && !voted ? "opacity-50 cursor-not-allowed" : ""}
+        ${disabled && !voted ? "opacity-40 cursor-not-allowed hover:border-gray-200 hover:bg-white/60 hover:text-gray-400 hover:shadow-none" : ""}
       `}
     >
-      <span className="text-base leading-none">{voted ? "▲" : "△"}</span>
-      <span className="font-bold">{count}</span>
+      <svg
+        className={`w-4 h-4 transition-transform ${voted ? "scale-110" : ""}`}
+        fill={voted ? "currentColor" : "none"}
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth={2.5}
+          d="M5 15l7-7 7 7"
+        />
+      </svg>
+      <span className="font-bold text-sm">{count}</span>
     </button>
   );
 }
