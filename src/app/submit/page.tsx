@@ -70,19 +70,31 @@ export default function SubmitPage() {
   }
 
   return (
-    <div className="max-w-2xl mx-auto px-4 py-8">
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-8">
-        <h1 className="text-2xl font-bold mb-2">Submit Your Project</h1>
-        <p className="text-gray-500 text-sm mb-6">
-          Share your project with the community and get votes!
-        </p>
+    <div className="max-w-2xl mx-auto px-4 py-10">
+      <div className="glass rounded-2xl shadow-xl shadow-primary-500/10 border border-white/60 p-6 sm:p-8">
+        <div className="mb-6">
+          <div className="flex items-center gap-3 mb-2">
+            <span className="text-3xl">🚀</span>
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">
+              Submit Your Project
+            </h1>
+          </div>
+          <p className="text-gray-500 text-sm ml-12">
+            Share your project with the community and get votes!
+          </p>
+        </div>
 
-        <div className="bg-amber-50 border border-amber-300 rounded-xl p-4 mb-6 text-sm text-amber-900 leading-relaxed">
-          <strong>Important:</strong> When posting about your project on social
-          media, make sure to tag{" "}
-          <strong className="text-amber-950">@CognitionAI</strong> and{" "}
-          <strong className="text-amber-950">@DevinAI</strong> so your
-          submission gets recognized!
+        <div className="bg-gradient-to-r from-amber-50 to-orange-50 border border-amber-200/60 rounded-xl p-4 mb-6 text-sm text-amber-900 leading-relaxed">
+          <div className="flex items-start gap-2">
+            <span className="text-lg leading-none mt-0.5">📢</span>
+            <div>
+              <strong>Tip:</strong> When posting about your project on social
+              media, tag{" "}
+              <strong className="text-amber-950">@CognitionAI</strong> and{" "}
+              <strong className="text-amber-950">@DevinAI</strong> so your
+              submission gets recognized!
+            </div>
+          </div>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -101,7 +113,7 @@ export default function SubmitPage() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="My Awesome Project"
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
             />
           </div>
 
@@ -120,7 +132,7 @@ export default function SubmitPage() {
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Describe what your project does and why it's great..."
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 resize-y"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 resize-y transition-all"
             />
             <p className="text-xs text-gray-400 mt-1 text-right">
               {description.length} / 1000
@@ -140,20 +152,28 @@ export default function SubmitPage() {
               value={socialLink}
               onChange={(e) => setSocialLink(e.target.value)}
               placeholder="https://twitter.com/you/status/..."
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
             />
             <p className="text-xs text-gray-400 mt-1">
               Link to your post about this project (Twitter/X, LinkedIn, etc.)
             </p>
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {success && <p className="text-sm text-green-600">{success}</p>}
+          {error && (
+            <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+              {success}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={submitting}
-            className="px-6 py-2.5 rounded-md bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
+            className="px-8 py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold text-sm hover:from-primary-500 hover:to-primary-400 shadow-md shadow-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed cursor-pointer transition-all"
           >
             {submitting ? "Submitting..." : "Submit Project"}
           </button>

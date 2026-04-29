@@ -47,10 +47,20 @@ export default function LoginPage() {
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-64px)] px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-md border border-gray-200 p-8">
-        <h1 className="text-2xl font-bold text-center mb-6">
-          {isSignUp ? "Create Account" : "Sign In"}
-        </h1>
+      <div className="w-full max-w-md glass rounded-2xl shadow-xl shadow-primary-500/10 border border-white/60 p-8">
+        <div className="text-center mb-6">
+          <span className="text-4xl mb-3 block">
+            {isSignUp ? "🚀" : "👋"}
+          </span>
+          <h1 className="text-2xl font-bold bg-gradient-to-r from-primary-700 to-primary-500 bg-clip-text text-transparent">
+            {isSignUp ? "Create Account" : "Welcome Back"}
+          </h1>
+          <p className="text-sm text-gray-500 mt-1">
+            {isSignUp
+              ? "Join the community and share your projects"
+              : "Sign in to submit and vote on projects"}
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -67,7 +77,7 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@example.com"
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
             />
           </div>
 
@@ -86,27 +96,35 @@ export default function LoginPage() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="At least 6 characters"
-              className="w-full px-3 py-2 rounded-md border border-gray-300 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-white/80 text-sm focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-primary-400 transition-all"
             />
           </div>
 
-          {error && <p className="text-sm text-red-600">{error}</p>}
-          {success && <p className="text-sm text-green-600">{success}</p>}
+          {error && (
+            <div className="text-sm text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">
+              {error}
+            </div>
+          )}
+          {success && (
+            <div className="text-sm text-green-700 bg-green-50 border border-green-200 rounded-lg px-3 py-2">
+              {success}
+            </div>
+          )}
 
           <button
             type="submit"
             disabled={submitting}
-            className="w-full py-2.5 rounded-md bg-blue-600 text-white font-semibold text-sm hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed cursor-pointer"
+            className="w-full py-2.5 rounded-xl bg-gradient-to-r from-primary-600 to-primary-500 text-white font-semibold text-sm hover:from-primary-500 hover:to-primary-400 shadow-md shadow-primary-500/20 disabled:from-gray-300 disabled:to-gray-400 disabled:shadow-none disabled:cursor-not-allowed cursor-pointer transition-all"
           >
             {submitting
               ? "Please wait..."
               : isSignUp
-                ? "Sign Up"
+                ? "Create Account"
                 : "Sign In"}
           </button>
         </form>
 
-        <p className="text-center text-sm text-gray-500 mt-4">
+        <p className="text-center text-sm text-gray-500 mt-5">
           {isSignUp ? "Already have an account?" : "Don't have an account?"}{" "}
           <button
             onClick={() => {
@@ -114,7 +132,7 @@ export default function LoginPage() {
               setError("");
               setSuccess("");
             }}
-            className="text-blue-600 font-semibold hover:underline cursor-pointer"
+            className="text-primary-600 font-semibold hover:text-primary-800 transition-colors cursor-pointer"
           >
             {isSignUp ? "Sign In" : "Sign Up"}
           </button>

@@ -86,19 +86,38 @@ export function Leaderboard() {
 
   if (loading) {
     return (
-      <p className="text-center text-gray-400 py-12">Loading projects...</p>
+      <div className="flex flex-col items-center gap-3 py-16">
+        <div className="w-8 h-8 border-3 border-primary-200 border-t-primary-500 rounded-full animate-spin" />
+        <p className="text-sm text-gray-400">Loading projects...</p>
+      </div>
     );
   }
 
   if (error) {
-    return <p className="text-center text-red-500 py-12">{error}</p>;
+    return (
+      <div className="text-center py-12">
+        <p className="text-red-500 mb-3">{error}</p>
+        <button
+          onClick={() => window.location.reload()}
+          className="text-sm text-primary-600 hover:text-primary-800 font-medium cursor-pointer"
+        >
+          Try again
+        </button>
+      </div>
+    );
   }
 
   if (projects.length === 0) {
     return (
-      <p className="text-center text-gray-400 py-12">
-        No projects submitted yet. Be the first!
-      </p>
+      <div className="text-center py-16">
+        <span className="text-5xl block mb-4">🎯</span>
+        <p className="text-gray-500 font-medium mb-1">
+          No projects submitted yet
+        </p>
+        <p className="text-sm text-gray-400">
+          Be the first to share your project!
+        </p>
+      </div>
     );
   }
 
