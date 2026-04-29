@@ -1,67 +1,83 @@
-# Project Submission Form
+# Project Showcase
 
-A responsive, client-side project submission form built with vanilla HTML, CSS, and JavaScript.
+A project submission and voting platform built with **Next.js**, **Supabase**, and **Tailwind CSS**. Users sign in with email, submit their projects, upvote others, and compete on a live leaderboard.
 
 ## Features
 
-- **Multi-section form** — Project info, team details, and additional context
-- **Client-side validation** — Real-time inline validation on blur with descriptive error messages
-- **Responsive design** — Works on desktop, tablet, and mobile
-- **Character counter** — Live character count for the description field
-- **Success modal** — Confirmation dialog on successful submission
-- **Accessible** — Proper labels, focus states, and semantic HTML
-- **Zero dependencies** — No frameworks or libraries required
+- **Email Authentication** — Sign up / sign in / sign out via Supabase Auth
+- **Project Submission** — Name, description, and social media post link
+- **Tagging Reminder** — Prompts users to tag @CognitionAI and @DevinAI
+- **Upvoting** — One vote per user per project; toggle on/off
+- **Leaderboard** — Projects ranked by most upvotes with medals for top 3
+- **Responsive** — Works on desktop, tablet, and mobile
 
-## Form Fields
+## Tech Stack
 
-### Project Information
-- Project Name (required)
-- Category (required)
-- Project Description (required, max 1000 chars)
-- Technologies Used (required)
-- Repository URL (optional)
-- Live Demo URL (optional)
+- [Next.js](https://nextjs.org/) (App Router, TypeScript)
+- [Supabase](https://supabase.com/) (Auth + PostgreSQL)
+- [Tailwind CSS](https://tailwindcss.com/) v4
 
-### Team Information
-- Team Lead Name (required)
-- Email Address (required)
-- Team Size (required, 1–20)
-- Team Members (optional)
+## Setup
 
-### Additional Details
-- Project Timeline (start/end dates)
-- Project Status (required: Planning / In Progress / Completed)
-- Challenges Faced (optional)
-- Submission guidelines agreement (required)
+### 1. Create a Supabase Project
 
-## Getting Started
+Go to [supabase.com](https://supabase.com) and create a new project.
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/MatheusDaros/project-submission-form.git
-   ```
+### 2. Run the Database Setup
 
-2. Open `index.html` in your browser — no build step required.
+Open the **SQL Editor** in your Supabase Dashboard and run [`supabase-setup.sql`](supabase-setup.sql). This creates:
+
+- `projects` table
+- `votes` table (unique constraint: one vote per user per project)
+- Row Level Security (RLS) policies
+- Performance indexes
+
+### 3. Configure Environment Variables
+
+Copy `.env.local.example` to `.env.local` and fill in your Supabase credentials:
+
+```bash
+cp .env.local.example .env.local
+```
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key-here
+```
+
+Find these at: Supabase Dashboard → Settings → API.
+
+### 4. Install and Run
+
+```bash
+npm install
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Project Structure
 
 ```
-project-submission-form/
-├── index.html          # Main HTML page
-├── css/
-│   └── styles.css      # All styles
-├── js/
-│   ├── validation.js   # Validation utilities
-│   └── form.js         # Form controller & event handling
-└── README.md
+src/
+├── app/
+│   ├── layout.tsx          # Root layout with AuthProvider and Navbar
+│   ├── page.tsx            # Home page with leaderboard
+│   ├── globals.css         # Tailwind imports
+│   ├── login/
+│   │   └── page.tsx        # Sign in / sign up page
+│   └── submit/
+│       └── page.tsx        # Project submission form
+├── components/
+│   ├── AuthProvider.tsx    # Auth context with Supabase
+│   ├── Navbar.tsx          # Navigation bar
+│   ├── Leaderboard.tsx     # Leaderboard data fetching and rendering
+│   ├── ProjectCard.tsx     # Individual project card
+│   └── VoteButton.tsx      # Upvote toggle button
+└── lib/
+    ├── supabase.ts         # Supabase client
+    └── types.ts            # TypeScript types
 ```
-
-## Customization
-
-- **Styling** — Edit `css/styles.css`. All colors and spacing use CSS custom properties defined in `:root`.
-- **Validation rules** — Edit `js/validation.js` to change or add validation logic.
-- **Form fields** — Add new fields in `index.html` and update the `collectFormData()` and validation functions accordingly.
-- **Backend integration** — Replace the `console.log` in the submit handler (`js/form.js`) with a `fetch()` call to your API endpoint.
 
 ## License
 
