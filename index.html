@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Project Submission Form</title>
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="form-header">
+      <h1>Project Submission</h1>
+      <p>Fill out the form below to submit your project for review.</p>
+    </header>
+
+    <form id="submission-form" novalidate>
+      <!-- Project Info -->
+      <fieldset>
+        <legend>Project Information</legend>
+
+        <div class="form-group">
+          <label for="project-name">Project Name <span class="required">*</span></label>
+          <input type="text" id="project-name" name="projectName" required placeholder="Enter your project name">
+          <span class="error-message" id="project-name-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Category <span class="required">*</span></label>
+          <select id="category" name="category" required>
+            <option value="">Select a category</option>
+            <option value="web">Web Application</option>
+            <option value="mobile">Mobile Application</option>
+            <option value="desktop">Desktop Application</option>
+            <option value="api">API / Backend Service</option>
+            <option value="data">Data Science / ML</option>
+            <option value="devops">DevOps / Infrastructure</option>
+            <option value="other">Other</option>
+          </select>
+          <span class="error-message" id="category-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Project Description <span class="required">*</span></label>
+          <textarea id="description" name="description" rows="5" required placeholder="Describe your project, its goals, and key features"></textarea>
+          <span class="error-message" id="description-error"></span>
+          <span class="char-count" id="description-count">0 / 1000</span>
+        </div>
+
+        <div class="form-group">
+          <label for="tech-stack">Technologies Used <span class="required">*</span></label>
+          <input type="text" id="tech-stack" name="techStack" required placeholder="e.g. React, Node.js, PostgreSQL">
+          <span class="hint">Separate multiple technologies with commas</span>
+          <span class="error-message" id="tech-stack-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="repo-url">Repository URL</label>
+          <input type="url" id="repo-url" name="repoUrl" placeholder="https://github.com/user/project">
+          <span class="error-message" id="repo-url-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="demo-url">Live Demo URL</label>
+          <input type="url" id="demo-url" name="demoUrl" placeholder="https://your-project.example.com">
+          <span class="error-message" id="demo-url-error"></span>
+        </div>
+      </fieldset>
+
+      <!-- Team Info -->
+      <fieldset>
+        <legend>Team Information</legend>
+
+        <div class="form-group">
+          <label for="team-lead">Team Lead Name <span class="required">*</span></label>
+          <input type="text" id="team-lead" name="teamLead" required placeholder="Full name">
+          <span class="error-message" id="team-lead-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="you@example.com">
+          <span class="error-message" id="email-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="team-size">Team Size <span class="required">*</span></label>
+          <input type="number" id="team-size" name="teamSize" min="1" max="20" required placeholder="Number of members">
+          <span class="error-message" id="team-size-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="team-members">Team Members</label>
+          <textarea id="team-members" name="teamMembers" rows="3" placeholder="List other team members (one per line)"></textarea>
+        </div>
+      </fieldset>
+
+      <!-- Additional Details -->
+      <fieldset>
+        <legend>Additional Details</legend>
+
+        <div class="form-group">
+          <label for="timeline">Project Timeline</label>
+          <div class="date-range">
+            <div>
+              <label for="start-date" class="sub-label">Start Date</label>
+              <input type="date" id="start-date" name="startDate">
+            </div>
+            <div>
+              <label for="end-date" class="sub-label">End Date</label>
+              <input type="date" id="end-date" name="endDate">
+            </div>
+          </div>
+          <span class="error-message" id="timeline-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label>Project Status <span class="required">*</span></label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="status" value="planning" required>
+              <span>Planning</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="status" value="in-progress">
+              <span>In Progress</span>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="status" value="completed">
+              <span>Completed</span>
+            </label>
+          </div>
+          <span class="error-message" id="status-error"></span>
+        </div>
+
+        <div class="form-group">
+          <label for="challenges">Challenges Faced</label>
+          <textarea id="challenges" name="challenges" rows="3" placeholder="Describe any challenges or obstacles encountered"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input type="checkbox" id="terms" name="terms" required>
+            <span>I confirm the information provided is accurate and agree to the <a href="#" id="terms-link">submission guidelines</a>. <span class="required">*</span></span>
+          </label>
+          <span class="error-message" id="terms-error"></span>
+        </div>
+      </fieldset>
+
+      <div class="form-actions">
+        <button type="reset" class="btn btn-secondary" id="reset-btn">Reset Form</button>
+        <button type="submit" class="btn btn-primary" id="submit-btn">Submit Project</button>
+      </div>
+    </form>
+
+    <!-- Success Modal -->
+    <div class="modal-overlay" id="success-modal">
+      <div class="modal">
+        <div class="modal-icon">&#10003;</div>
+        <h2>Submission Received!</h2>
+        <p>Your project has been submitted successfully. You will receive a confirmation email shortly.</p>
+        <button class="btn btn-primary" id="modal-close">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/validation.js"></script>
+  <script src="js/form.js"></script>
+</body>
+</html>
